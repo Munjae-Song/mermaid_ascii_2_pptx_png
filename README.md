@@ -6,7 +6,7 @@ ASCII 다이어그램과 Mermaid 다이어그램을 PNG 이미지 또는 PowerPo
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
-
+*Github Copilot으로 바이브코딩함
 ## 기능
 
 - **Tkinter GUI** — 다이어그램을 붙여넣고 버튼 하나로 변환합니다.
