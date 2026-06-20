@@ -11,6 +11,7 @@ Rendering pipeline for PPTX:
 from __future__ import annotations
 
 import base64
+import shutil
 import subprocess
 import tempfile
 import urllib.error
@@ -23,6 +24,7 @@ from pptx.util import Emu
 
 from .mermaid_layout import is_native_mermaid, mermaid_to_layout
 from .pptx_exporter import export_layout_to_pptx
+from .style import BG
 
 # ─── Mermaid keyword detection ────────────────────────────────────────────────
 _MERMAID_STARTS: tuple[str, ...] = (
@@ -133,6 +135,10 @@ def render_mermaid_to_pptx(text: str, output_path: Path) -> Path:
 
 def _try_mmdc(text: str, output_path: Path) -> bool:
     """Attempt rendering with the local ``mmdc`` CLI.  Returns True on success."""
+    mmdc = shutil.which("mmdc")
+    if mmdc is None:
+        return False
+
     try:
         with tempfile.NamedTemporaryFile(
             mode="w", suffix=".mmd", delete=False, encoding="utf-8"
@@ -141,7 +147,7 @@ def _try_mmdc(text: str, output_path: Path) -> bool:
             tmp_in = Path(f.name)
 
         result = subprocess.run(
-            ["mmdc", "-i", str(tmp_in), "-o", str(output_path), "-b", "white"],
+            [mmdc, "-i", str(tmp_in), "-o", str(output_path), "-b", "white"],
             capture_output=True,
             timeout=30,
         )
@@ -155,7 +161,7 @@ def _try_mmdc(text: str, output_path: Path) -> bool:
 def _render_via_ink(text: str, output_path: Path) -> None:
     """Render via the mermaid.ink online API (no local Node.js required)."""
     encoded = base64.urlsafe_b64encode(text.encode("utf-8")).decode("ascii")
-    url = f"https://mermaid.ink/img/{encoded}?bgColor=FBFBF8"
+    url = f"https://mermaid.ink/img/{encoded}?bgColor={BG.lstrip('#')}"
 
     try:
         req = urllib.request.Request(

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 # ── Color palette ────────────────────────────────────────────────────────────
-BG         = "#FBFBF8"
+BG         = "#FFFFFF"
 INK        = "#1E2A36"
 MUTED      = "#6C7A89"
 NAVY       = "#244C5A"

@@ -229,7 +229,7 @@ class _PreviewWindow(tk.Toplevel):
         frame.columnconfigure(0, weight=1)
         frame.rowconfigure(0, weight=1)
 
-        canvas = tk.Canvas(frame, bg="#FBFBF8",
+        canvas = tk.Canvas(frame, bg="#FFFFFF",
                            width=min(img.width, self._MAX_W),
                            height=min(img.height, self._MAX_H))
         canvas.grid(row=0, column=0, sticky="nsew")
